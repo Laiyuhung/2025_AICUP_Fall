@@ -14,7 +14,6 @@ YOLOv12n / Colab 前處理 / 模型訓練 / 多模型評估 / F1 閾值搜尋 / 
 
 前處理完全使用 `ai_cup_preprocess.ipynb`，不需使用 main.py 的 preprocess。
 
----
 
 # 專案結構
 
@@ -29,7 +28,7 @@ YOLOv12n / Colab 前處理 / 模型訓練 / 多模型評估 / F1 閾值搜尋 / 
 └── runs/                    # YOLO 訓練輸出
 ```
 
----
+
 
 # 1. 安裝環境
 
@@ -37,7 +36,7 @@ YOLOv12n / Colab 前處理 / 模型訓練 / 多模型評估 / F1 閾值搜尋 / 
 pip install ultralytics opencv-python matplotlib numpy pandas
 ```
 
----
+
 
 # 2. 資料前處理（請使用 Colab Notebook）
 
@@ -79,7 +78,7 @@ dataset/
 ./dataset/images/val
 ```
 
----
+
 
 # 3. 模型訓練（使用 main.py）
 
@@ -104,7 +103,7 @@ runs/detect/1118_12n/weights/
 * `best.pt` 是 YOLO 官方 early stop
 * `best_ap50.pt` 是本專案根據「AP50 callback」額外儲存的最佳模型
 
----
+
 
 # 4. 多模型評估（AP@0.5）
 
@@ -124,7 +123,7 @@ python main.py eval
 * PR 曲線：`competition_eval_XXXX.png`
 * 各模型 AP@0.5 成績
 
----
+
 
 # 5. 尋找最佳 Confidence Threshold（F1）
 
@@ -153,7 +152,7 @@ Recall:    0.xxx
 
 比賽提交建議用此 threshold。
 
----
+
 
 # 6. 批次推論與多閾值 AP 評估（competition_batch.py）
 
@@ -167,11 +166,7 @@ Recall:    0.xxx
 執行方式：
 
 ```bash
-python competition_batch.py \
-    --model runs/detect/1118_12n/weights/best_ap50.pt \
-    --test ./42_testing_image/testing_image \
-    --gt your_gt.txt \
-    --out ./competition_outputs
+python competition_batch.py 
 ```
 
 主要程式碼：
@@ -186,7 +181,7 @@ python competition_batch.py \
 | 自動計算 AP/Precision/Recall | 依 IoU=0.5                   |
 | summary.csv              | 全部結果彙整                      |
 
----
+
 
 # 最推薦的使用流程（最省時間）
 
@@ -217,52 +212,10 @@ python main.py eval-threshold best_ap50.pt
 ### Step 5 — 批次跑全測試集，生成不同 conf submit
 
 ```bash
-python competition_batch.py --model best_ap50.pt
+python competition_batch.py
 ```
 
 ### Step 6 — 查看 summary.csv，選出最適提交 txt
 
----
 
-# 常見問題
 
-### Q1：前處理要用 main.py 還是 Notebook？
-
-只需用 **Notebook**，不要用 main.py 的 preprocess。
-
-### Q2：Notebook 在本機可以跑嗎？
-
-可以，但路徑需手動調整。
-建議仍在 Colab 執行。
-
-### Q3：最佳提交模型選擇？
-
-使用：
-
-```
-best_ap50.pt
-```
-
-### Q4：最佳 confidence 怎麼找？
-
-使用：
-
-```
-python main.py eval-threshold your_model.pt
-```
-
----
-
-# 授權
-
-本專案可自由使用於 AI CUP、研究或個人用途。
-
----
-
-如果你需要，我還能幫你：
-
-* 產生英文版 README
-* 製作 GitHub 專用的漂亮版 README（含章節目錄、折疊區）
-* 為 Notebook 加註解並整理成公開參賽用版本
-
-告訴我即可。
